@@ -1,0 +1,106 @@
+package com.thinknxt.customerdetails.service;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
+
+import com.thinknxt.customerdetails.dto.GenericResponse;
+import com.thinknxt.customerdetails.model.Customer;
+import com.thinknxt.customerdetails.repository.CustomerRepository;
+import com.thinknxt.customerdetails.utils.CommonUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+public class CustomerServiceTest {
+	
+
+    @Mock
+    private CustomerRepository customerRepository;
+    
+    @Mock
+    private MongoTemplate mongoTemplate;
+
+    @Mock
+    private CommonUtil commonUtil;
+
+    @InjectMocks
+    private CustomerService customerService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testRegisterMentorSuccess() {
+    	Customer mockcCustomer = createSampleCustomer();
+        String requestUri= "api/v1/mentor/register";
+        
+        when(customerRepository.existsByCifNumber((mockcCustomer.getCifNumber()))).thenReturn(false);
+        when(customerRepository.save(any(Customer.class))).thenReturn(mockcCustomer);
+        
+        HttpServletRequest httpRequest = mock(HttpServletRequest.class);
+        String responseMessage = "Customer " + mockcCustomer.getFirstName() + " " + mockcCustomer.getLastName() + " created successfully.";
+        
+        GenericResponse expectedResponse = new GenericResponse(HttpStatus.OK.value(),responseMessage, null, LocalDateTime.now(), requestUri, mockcCustomer);
+        
+        when(httpRequest.getRequestURI()).thenReturn(requestUri);
+        when(commonUtil.prepareResponse(anyString(), anyInt(), anyString(), any())).thenReturn(expectedResponse);
+        
+        GenericResponse response = customerService.createCustomer(mockcCustomer, httpRequest);
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertNotNull(response.getData());
+        assertEquals(responseMessage, response.getMessage());
+
+        verify(customerRepository, times(1)).save(eq(mockcCustomer));
+    
+    }
+    
+    @Test
+    public void testRegisterMentorDuplicateEmployeeId() {
+    	Customer mockMentor = createSampleCustomer();
+
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(customerRepository.existsByCifNumber(eq(mockMentor.getCifNumber()))).thenReturn(true);
+
+        assertThrows(.class, () -> {
+        	customerService.registerMentor(mockMentor, mockRequest);});
+
+        verify(customerRepository, times(1)).existsByCifNumber(eq(mockMentor.getCifNumber()));
+    }
+    
+    private Customer createSampleCustomer() {
+		Customer customer = new Customer();
+		customer.setCifNumber(10001);
+		customer.setFirstName("Rohit");
+		customer.setLastName("Sharma");
+		customer.setDobirth(LocalDate.of(1993,02,01)); 
+		customer.setIdtype("Passport");
+		customer.setIdNumber("524860049");
+		customer.setIdIssDate(LocalDate.of(2001,05,01));
+		customer.setIdExpDate(LocalDate.of(2052,02,01));
+		customer.setActive(true);
+		return customer;
+	}
+}

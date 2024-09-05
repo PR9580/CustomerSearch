@@ -1,0 +1,92 @@
+package com.thinknxt.customerdetails.service;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
+
+import com.thinknxt.customerdetails.model.Customer;
+import com.thinknxt.customerdetails.repository.CustomerRepository;
+import com.thinknxt.customerdetails.utils.CommonUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+public class CustomerServiceTest {
+	
+
+    @Mock
+    private CustomerRepository customerRepository;
+    
+    @Mock
+    private MongoTemplate mongoTemplate;
+
+    @Mock
+    private CommonUtil commonUtil;
+
+    @InjectMocks
+    private CustomerService customerService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testRegisterMentorSuccess() {
+    	Mentor mockMentor = createSampleMentor();
+        String requestUri= "api/v1/mentor/register";
+        
+        when(mentorRepository.existsByEmployeeId((mockMentor.getEmployeeId()))).thenReturn(false);
+        when(mentorRepository.existsByEmail(eq(mockMentor.getEmail()))).thenReturn(false);
+        when(commonUtil.encryptPassword(eq(mockMentor.getPassword()))).thenReturn("encryptedPassword");
+        when(mentorRepository.save(any(Mentor.class))).thenReturn(mockMentor);
+        
+        HttpServletRequest httpRequest = mock(HttpServletRequest.class);
+        String responseMessage = "Mentor " + mockMentor.getFirstName() + " " + mockMentor.getLastName() + " created successfully.";
+        
+        ResponseDetails expectedResponse = new ResponseDetails(HttpStatus.OK.value(),responseMessage, null, LocalDateTime.now(), requestUri, mockMentor);
+        
+        when(httpRequest.getRequestURI()).thenReturn(requestUri);
+        when(commonUtil.prepareResponse(anyString(), anyInt(), anyString(), any())).thenReturn(expectedResponse);
+        
+        ResponseDetails response = mentorService.registerMentor(mockMentor, httpRequest);
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertNotNull(response.getData());
+        assertEquals(responseMessage, response.getMessage());
+
+        verify(mentorRepository, times(1)).save(eq(mockMentor));
+    
+    }
+    
+    private Customer createSampleCustomer() {
+		Customer customer = new Customer();
+		customer.setCifNumber(10001);
+		customer.setFirstName("Rohit");
+		customer.setLastName("Sharma");
+		customer.setDobirth(LocalDate.of(1993,02,01)); 
+		customer.setIdtype("Passport");
+		customer.setIdNumber("524860049");
+		customer.setIdIssDate(LocalDate.of(2001,05,01));
+		customer.setIdExpDate(LocalDate.of(2052,02,01));
+		customer.setActive(true);
+		return customer;
+	}
+}

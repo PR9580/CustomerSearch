@@ -1,0 +1,93 @@
+<div class="customer-search">
+  <h3>Customer Search</h3>
+  <br>
+  <form (ngSubmit)="onSearch()">
+    <label for="cifNumber">Customer CIF Number:</label>
+    <input type="text" id="cifNumber" [(ngModel)]="cifNumber" name="cifNumber" required> 
+    <br>
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<div *ngIf="customer" class="customer-info" id="customer-info">
+  <div class="container mt-5">
+    <form>
+     
+      <div  class="container-fluid">
+        <div class="row">
+        <div class="col-md-4">
+          <label for="validationDefault01">First name</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.firstName }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault01">Middle name</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.middleName }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02">Last name</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.lastName }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="validationDefault01">Gender</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.gender }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault01">Date of Birth</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.dobirth }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02">Id Type</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.idtype }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="validationDefault01">Id Number</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.idNumber }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault01">Id Issue Date</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.idIssDate }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02">Id Expiry Date</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.idExpDate }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="validationDefault01">Customer Type</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.customerType }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault01">Address</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.addrline1 }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02">City</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.city }}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="validationDefault01">Post Code</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.postCode }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault01">Country</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.country }}</div>
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02">Nationality</label>
+          <div class="form-control" id="validationDefault01">{{ customer.data.nationality }}</div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+

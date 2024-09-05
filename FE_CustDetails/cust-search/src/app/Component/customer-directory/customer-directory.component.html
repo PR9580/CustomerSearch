@@ -1,0 +1,32 @@
+<div class="customer-details">
+    <h3>Customer Data Directory</h3>
+    <label for="cifNumber">A Complete Overview of Our Valued Customers</label>
+</div>
+<table class="data-table">
+    <thead>
+      <tr>
+        <th>CIF Number</th>
+        <th>Name</th>
+        <th>Id Type</th>
+        <th>Id Number</th>
+        <th>Id Issue Date</th>
+        <th>Id Expiry Date</th>
+        <th>Customer Type</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.cifNumber }}</td>
+        <td>{{ customer.firstName }} {{ customer.lastName }}</td>
+        <td>{{ customer.idtype }}</td>
+        <td>{{ customer.idNumber }}</td>
+        <td>{{ customer.idIssDate }}</td>
+        <td>{{ customer.idExpDate }}</td>
+        <td>{{ customer.customerType }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+
+<router-outlet></router-outlet>

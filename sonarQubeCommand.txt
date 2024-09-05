@@ -1,0 +1,1 @@
+mvn clean verify sonar:sonar  -Dsonar.projectKey=ThinkNxt_CustomerDetails  -Dsonar.projectName='ThinkNxt_CustomerDetails'  -Dsonar.host.url=http://localhost:9000   -Dsonar.token=sqp_039299074b12c4d6b03bfa5cc821823292d02d3c

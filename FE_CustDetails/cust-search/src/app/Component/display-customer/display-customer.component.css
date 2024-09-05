@@ -1,0 +1,79 @@
+.customer-search {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .customer-search h3 {
+    text-align: center;
+  }
+  
+  .customer-search form {
+    text-align: left;
+  }
+  
+  .customer-search label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .customer-search input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .customer-search button[type="submit"] {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .customer-search button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  .customer-info {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f5f5f5;
+    
+  }
+  
+  .customer-info .container {
+    text-align: left;
+  }
+  
+  .customer-info label {
+    font-weight: bold;
+  }
+  
+  .customer-info .form-control {
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    min-height: 33px;
+  }
+  
+  @media (max-width: 768px) {
+    .customer-info .col-md-4 {
+      width: 100%;
+    }
+  }
+
+  
+  

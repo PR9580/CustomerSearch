@@ -1,0 +1,5 @@
+package com.thinknxt.customerdetails.config;
+
+public class CorsConfig {
+
+}
